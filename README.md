@@ -59,3 +59,19 @@ Joe's mother's name is **Barbara**.
 ```html
 <p>Joe's mother's name is <span data-update-id="joe" data-update-key="mothers[child='Joe'].name">Barbara</span></p>
 ```
+
+## Usage with AJAX
+
+```javascript
+$.getJSON('http://example.com/data.json', function(data) {
+  // data = {cubs: 1, red_sox: 0}
+  new ElementUpdater('game-score').update(data);
+});
+```
+
+```html
+<ul id="game-score">
+  <li>CHC: <span data-update-id="game-score" data-update-key="cubs">0</li>
+  <li>BOS: <span data-update-id="game-score" data-update-key="red_sox">0</li>
+</ul>
+```
