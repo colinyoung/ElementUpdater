@@ -19,7 +19,7 @@ ElementUpdater.prototype = {
       
       // The value (what the element's new text will be) should be present in the data hash
       var value = _this.get(data, key);
-      if (typeof value == "undefined" || value == null) return;
+      if (typeof value === "undefined" || value === null) return;
       
       $(el)
       .text(value + "")            // Replace the text with the new value
@@ -36,7 +36,7 @@ ElementUpdater.prototype = {
   //
   // Or, you can keep it simple and just do people[joe] or people.joe (if it's an array, not an object).
   get: function(data, key) {
-    if (typeof key == "undefined" || key == null) {
+    if (typeof key === "undefined" || key === null) {
       return data;
     }
     var selectors = key.split('.');
@@ -54,7 +54,7 @@ ElementUpdater.prototype = {
       var object = kv_pair[0];
       var bracket = kv_pair[1];
       bracket = bracket.substr(0, bracket.indexOf(']')); // Make sure the subscript stops at the closing bracket
-      if (bracket.indexOf('=') == -1) {
+      if (bracket.indexOf('=') === -1)
         return data[key]; // Return data's key value since there's no =
       } else {
         var kv_pair2 = bracket.split('='); // Select the attribute
@@ -62,12 +62,11 @@ ElementUpdater.prototype = {
         var match = kv_pair2[1];
         var results = $.grep(data[object], function(e) { // Match it with jQuery.grep
           var new_match = match.replace(/(^\'|^"|"$|\'$)/g, ''); // Remove all leading and trailing ' and " characters
-          return e[attr] == new_match;
+          return e[attr] === new_match;
         });
-        if (typeof results[0] == "undefined") return null;
+        if (typeof results[0] === "undefined") return null;
         // Recur, looking at the new path.
         return this.get(results[0], next);
-      }
     } else {
       return data[key];
     }
