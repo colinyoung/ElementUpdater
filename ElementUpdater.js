@@ -36,9 +36,8 @@ ElementUpdater.prototype = {
   //
   // Or, you can keep it simple and just do people[joe] or people.joe (if it's an array, not an object).
   get: function(data, key) {
-    if (typeof key === "undefined" || key === null) {
-      return data;
-    }
+    if (typeof key === "undefined" || key === null) return data;
+    
     var selectors = key.split('.');
     var top = selectors[0];
     var next = "";
@@ -56,20 +55,21 @@ ElementUpdater.prototype = {
       bracket = bracket.substr(0, bracket.indexOf(']')); // Make sure the subscript stops at the closing bracket
       if (bracket.indexOf('=') === -1)
         return data[key]; // Return data's key value since there's no =
-      } else {
-        var kv_pair2 = bracket.split('='); // Select the attribute
-        var attr = kv_pair2[0];
-        var match = kv_pair2[1];
-        var results = $.grep(data[object], function(e) { // Match it with jQuery.grep
-          var new_match = match.replace(/(^\'|^"|"$|\'$)/g, ''); // Remove all leading and trailing ' and " characters
-          return e[attr] === new_match;
-        });
-        if (typeof results[0] === "undefined") return null;
-        // Recur, looking at the new path.
-        return this.get(results[0], next);
-    } else {
-      return data[key];
+        
+      var kv_pair2 = bracket.split('='); // Select the attribute
+      var attr = kv_pair2[0];
+      var match = kv_pair2[1];
+      var results = $.grep(data[object], function(e) { // Match it with jQuery.grep
+        var new_match = match.replace(/(^\'|^"|"$|\'$)/g, ''); // Remove all leading and trailing ' and " characters
+        return e[attr] === new_match;
+      });
+      if (typeof results[0] === "undefined") return null;
+      
+      // Recur, looking at the new path.
+      return this.get(results[0], next);
     }
+    
+    return data[key];
   }
 };
 
